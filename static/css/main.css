@@ -715,8 +715,16 @@ video {
   margin-top: 2rem;
 }
 
+.ml-64 {
+  margin-left: 16rem;
+}
+
 .block {
   display: block;
+}
+
+.inline-block {
+  display: inline-block;
 }
 
 .flex {
@@ -933,6 +941,10 @@ video {
   overflow: hidden;
 }
 
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
 .overflow-y-auto {
   overflow-y: auto;
 }
@@ -1114,6 +1126,10 @@ video {
 
 .pt-40 {
   padding-top: 10rem;
+}
+
+.pt-8 {
+  padding-top: 2rem;
 }
 
 .text-left {

@@ -14,18 +14,19 @@
         left: 0;
         width: 250px;
         height: 100vh;
-        background-color: #343a40;
+        background-color: #28a745;
         color: white;
-        padding-top: 50px; /* Distance from the top */
+        padding-top: 50px;
         padding-left: 20px;
         padding-right: 20px;
+        z-index: 10;
     }
 
     .sidebar h3 {
-        text-align: center; /* Menyelaraskan teks di tengah */
+        text-align: center;
         color: white;
-        font-size: 24px; /* Mengatur ukuran font */
-        margin-bottom: 30px; /* Memberikan jarak di bawah */
+        font-size: 24px;
+        margin-bottom: 30px;
     }
 
     .sidebar a {
@@ -37,97 +38,73 @@
     }
 
     .sidebar a:hover {
-        background-color: #495057;
+        background-color: #218838;
     }
 
     .sidebar a.active {
-        background-color: #495057; /* Warna background saat aktif */
-        font-weight: bold; /* Menebalkan teks */
-    }
-
-    /* Main content area (to prevent sidebar overlap) */
-    .main-content {
-        margin-left: 270px;  /* Give space for the sidebar */
-        padding: 20px;
-    }
-
-    /* Membatasi tinggi tabel dan menambahkan scroll vertikal */
-    .table-container {
-        max-height: 500px;
-        overflow-y: auto;  /* Menambahkan scroll vertikal */
-    }
-
-    /* Membuat tabel scrollable horizontal */
-    .table-wrapper {
-        overflow-x: auto;  /* Menambahkan scroll horizontal jika lebar tabel melebihi layar */
-    }
-
-    table {
-        table-layout: fixed;
-    }
-
-    td, th {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;  /* Memastikan teks tidak meluber ke luar */
-    }
-
-    .table img {
-        max-width: 100px; /* Membatasi ukuran gambar */
-        height: auto;
+        background-color: #218838;
+        font-weight: bold;
     }
 </style>
 
 <body class="bg-gray-100 min-h-screen flex flex-col">
-    <!-- Header -->
-    <header class="bg-blue-600 text-white py-4">
-        <h1 class="text-center text-2xl font-semibold">Daftar Pengepul</h1>
-    </header>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h3>Hi Admin Simpas</h3>
+        <a href="{{ url_for('admin_dashboard') }}" class="{{ 'active' if request.endpoint == 'admin_dashboard' else '' }}">Dashboard</a>
+        <a href="{{ url_for('articles') }}" class="{{ 'active' if request.endpoint == 'articles' else '' }}">Articles</a>
+        <a href="{{ url_for('settings') }}" class="{{ 'active' if request.endpoint == 'settings' else '' }}">Settings</a>
+        <a href="{{ url_for('collectors') }}" class="{{ 'active' if request.endpoint == 'collectors' else '' }}">Collectors</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
 
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <h3>Hi Admin Simpas</h3>
-            <a href="{{ url_for('admin_dashboard') }}" class="{{ 'active' if request.endpoint == 'admin_dashboard' else '' }}">Dashboard</a>
-            <a href="{{ url_for('articles') }}" class="{{ 'active' if request.endpoint == 'articles' else '' }}">Articles</a>
-            <a href="{ url_for('settings') }">Settings</a>
-            <a href="{{ url_for('add_collector') }}" class="{{ 'active' if request.endpoint == 'add_collcector' else '' }}">Add Collector</a>
-            <a href="{{ url_for('collectors') }}" class="{{ 'active' if request.endpoint == 'collectors' else '' }}">Pengepul</a>
-            <a href="{{ url_for('logout') }}">Logout</a>  <!-- Logout link -->
-        </div> 
+    <!-- Main Content -->
+    <div class="main-content ml-64 pt-8">
+        <div class="container mx-auto px-4 py-6">
+            <div class="bg-white rounded-lg shadow p-6">
+                <!-- Title -->
+                <h1 class="text-2xl font-semibold text-gray-700 mb-6">Daftar Pengepul</h1>
 
-    <!-- Container -->
-    <div class="container mx-auto px-4 py-6">
-        <div class="bg-white rounded-lg shadow p-4">
-            <!-- Table -->
-            <table class="min-w-full bg-white border border-gray-200 rounded-lg">
-                <thead>
-                    <tr class="bg-gray-100">
-                        <th class="py-2 px-4 text-left text-sm font-medium text-gray-700">ID</th>
-                        <th class="py-2 px-4 text-left text-sm font-medium text-gray-700">Nama</th>
-                        <th class="py-2 px-4 text-left text-sm font-medium text-gray-700">Email</th>
-                        <th class="py-2 px-4 text-left text-sm font-medium text-gray-700">Alamat</th>
-                        <th class="py-2 px-4 text-center text-sm font-medium text-gray-700">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for collector in collectors %}
-                    <tr class="border-t border-gray-200">
-                        <td class="py-2 px-4 text-sm text-gray-700">{{ collector[0] }}</td>
-                        <td class="py-2 px-4 text-sm text-gray-700">{{ collector[1] }}</td>
-                        <td class="py-2 px-4 text-sm text-gray-700">{{ collector[2] }}</td>
-                        <td class="py-2 px-4 text-sm text-gray-700">{{ collector[3] }}</td>
-                        <td class="py-2 px-4 text-center">
-                            <a href="{{ url_for('edit_collector', id=collector[0]) }}" class="text-blue-600 hover:underline">Edit</a> |
-                            <a href="{{ url_for('delete_collector', id=collector[0]) }}" class="text-red-600 hover:underline">Hapus</a>
-                        </td>
-                    </tr>
-                    {% else %}
-                    <tr>
-                        <td colspan="5" class="py-4 text-center text-gray-500">Tidak ada data pengepul</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                <!-- Add Collector Button -->
+                <div class="mb-4">
+                    <a href="{{ url_for('add_collector') }}" class="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                        Add Collector
+                    </a>
+                </div>
+
+                <!-- Table -->
+                <div class="table-wrapper overflow-x-auto">
+                    <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="py-2 px-4 text-left text-sm font-medium text-gray-700">ID</th>
+                                <th class="py-2 px-4 text-left text-sm font-medium text-gray-700">Nama</th>
+                                <th class="py-2 px-4 text-left text-sm font-medium text-gray-700">Email</th>
+                                <th class="py-2 px-4 text-left text-sm font-medium text-gray-700">Alamat</th>
+                                <th class="py-2 px-4 text-center text-sm font-medium text-gray-700">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for collector in collectors %}
+                            <tr class="border-t border-gray-200">
+                                <td class="py-2 px-4 text-sm text-gray-700">{{ collector[0] }}</td>
+                                <td class="py-2 px-4 text-sm text-gray-700">{{ collector[1] }}</td>
+                                <td class="py-2 px-4 text-sm text-gray-700">{{ collector[2] }}</td>
+                                <td class="py-2 px-4 text-sm text-gray-700">{{ collector[3] }}</td>
+                                <td class="py-2 px-4 text-center">
+                                    <a href="{{ url_for('edit_collector', id=collector[0]) }}" class="text-blue-600 hover:underline">Edit</a> |
+                                    <a href="{{ url_for('delete_collector', id=collector[0]) }}" class="text-red-600 hover:underline">Delete</a>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="5" class="py-4 text-center text-gray-500">Tidak ada data pengepul</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </body>

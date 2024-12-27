@@ -34,6 +34,43 @@ def hello_world():
 def chatbot():
     return render_template("chatbot.html")
 
+@app.route('/admin/settings', methods=['GET', 'POST'])
+def settings():
+    if 'user_id' not in session:
+        return redirect(url_for('login_admin'))  # Pastikan hanya admin yang login
+
+    # Koneksi ke database untuk mengambil data admin
+    connection = pymysql.connect(**db_config)
+    cur = connection.cursor()
+    
+    # Ambil data admin berdasarkan user_id (admin yang sedang login)
+    cur.execute("SELECT * FROM admin WHERE id = %s", (session['user_id'],))
+    admin = cur.fetchone()
+
+    if request.method == 'POST':
+        new_email = request.form['email']
+        new_password = request.form['password']
+
+        # Hash password baru
+        hashed_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
+
+        # Update email dan password di database
+        cur.execute("UPDATE admin SET email = %s, password = %s WHERE id = %s",
+                    (new_email, hashed_password.decode('utf-8'), admin[0]))
+        connection.commit()
+
+        # Flash message sukses
+        flash("Settings updated successfully!", "success")
+
+        # Redirect kembali ke halaman dashboard admin
+        return redirect(url_for('admin_dashboard'))
+
+    cur.close()
+    connection.close()
+
+    return render_template('admin/settings.html', admin=admin)
+
+
 # Halaman artikel
 @app.route("/artikel")
 def artikel():
@@ -169,7 +206,7 @@ def login_admin():
             if bcrypt.checkpw(password.encode('utf-8'), stored_hash.encode('utf-8')):
                 session['user_id'] = user[0]  # Simpan ID user di session
                 flash("Login successful!", "success")
-                return redirect(url_for('articles'))  # Redirect ke dashboard admin
+                return redirect(url_for('admin_dashboard'))  # Redirect ke dashboard admin
             else:
                 flash("Invalid password", "danger")
         else:
@@ -272,11 +309,6 @@ def delete_collector(id):
     connection.close()
     flash("Pengepul telah dihapus!", "success")
     return redirect(url_for('collectors'))
-
-
-
-
-
 
 @app.route('/logout')
 def logout():

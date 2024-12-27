@@ -13,7 +13,7 @@
             left: 0;
             width: 250px;
             height: 100vh;
-            background-color: #343a40;
+            background-color: #28a745;
             color: white;
             padding-top: 50px; /* Distance from the top */
             padding-left: 20px;
@@ -36,11 +36,11 @@
         }
 
         .sidebar a:hover {
-            background-color: #495057;
+            background-color: #218838;
         }
 
         .sidebar a.active {
-            background-color: #495057; /* Warna background saat aktif */
+            background-color: #218838; /* Warna background saat aktif */
             font-weight: bold; /* Menebalkan teks */
         }
 
@@ -84,11 +84,10 @@
         <h3>Hi Admin Simpas</h3>
         <a href="{{ url_for('admin_dashboard') }}" class="{{ 'active' if request.endpoint == 'admin_dashboard' else '' }}">Dashboard</a>
         <a href="{{ url_for('articles') }}" class="{{ 'active' if request.endpoint == 'articles' else '' }}">Articles</a>
-        <a href="{ url_for('settings') }">Settings</a>
-        <a href="{{ url_for('add_collector') }}" class="{{ 'active' if request.endpoint == 'add_collcector' else '' }}">Add Collector</a>
-        <a href="{{ url_for('collectors') }}" class="{{ 'active' if request.endpoint == 'collectors' else '' }}">Pengepul</a>
-        <a href="{{ url_for('logout') }}">Logout</a>  <!-- Logout link -->
-    </div>  
+        <a href="{{ url_for('settings') }}" class="{{ 'active' if request.endpoint == 'settings' else '' }}">Settings</a>
+        <a href="{{ url_for('collectors') }}" class="{{ 'active' if request.endpoint == 'collectors' else '' }}">Collectors</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
 
     <!-- Main Content -->
     <div class="main-content">
