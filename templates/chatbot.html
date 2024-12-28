@@ -1,62 +1,112 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chatbot Simpas</title>
   <link rel="icon" href="/static/images/logo awal.png" type="image/x-icon">
   <link href="/static/css/main.css" rel="stylesheet">
+  <style>
+    /* Gaya khusus tambahan */
+    .typing-indicator {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        background: #d3d3d3;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+    .typing-indicator::before {
+        content: "Mengetik...";
+        font-size: 14px;
+        margin-right: 10px;
+    }
+    .typing-indicator::after {
+        content: "";
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #4caf50;
+        animation: blink 1s infinite;
+    }
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+    }
+  </style>
 </head>
 <body class="bg-gray-200 flex items-center justify-center min-h-screen">
   <div class="bg-green-600 w-full max-w-md p-6 rounded-lg shadow-md">
-    <h2 class="text-2xl font-semibold text-white ">Simpas Chatbot</h2>
-    <p class="text-white mb-4">ada yang bisa saya bantu?</p>
+    <h2 class="text-2xl font-semibold text-white ">Chatbot Simpas</h2>
+    <p class="text-white mb-4">Ada yang bisa saya bantu?</p>
     <div id="chat-box" class="h-80 overflow-y-scroll border border-white rounded-lg p-4 space-y-4 mb-4">
-      <!-- Chat messages will appear here -->
-      
+      <!-- Pesan-pesan chat akan muncul di sini -->
     </div>
     <div class="flex items-center space-x-2">
-      <input type="text" id="chat-input" class="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Type a message...">
-      <button id="send-btn" class="bg-white text-gray-500 px-4 py-2 rounded-lg hover:bg-gray-200 focus:outline-none">Send</button>
+      <input type="text" id="chat-input" class="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ketik pesan...">
+      <button id="send-btn" class="bg-white text-gray-500 px-4 py-2 rounded-lg hover:bg-gray-200 focus:outline-none">Kirim</button>
     </div>
   </div>
 
   <script>
-    // Chatbot interaction script example
     const chatBox = document.getElementById("chat-box");
     const chatInput = document.getElementById("chat-input");
     const sendBtn = document.getElementById("send-btn");
 
-    sendBtn.addEventListener("click", () => {
-      const userMessage = chatInput.value;
-      if (userMessage.trim() === "") return;
-
-      // Display user message
-      const userBubble = document.createElement("div");
-      userBubble.className = "flex justify-end";
-      userBubble.innerHTML = `
-        <div class="bg-gray-200 text-gray-900 rounded-lg p-3 max-w-xs">
-          <p>${userMessage}</p>
-        </div>
-      `;
-      chatBox.appendChild(userBubble);
-      chatInput.value = "";
-
-      // Scroll to the bottom
-      chatBox.scrollTop = chatBox.scrollHeight;
-
-      // Simulate bot response
-      setTimeout(() => {
-        const botBubble = document.createElement("div");
-        botBubble.className = "flex items-start space-x-2";
-        botBubble.innerHTML = `
-          <div class="bg-green-500 text-white rounded-lg p-3 max-w-xs">
-            <p>This is a simulated response.</p>
-          </div>
+    // Fungsi untuk menambah pesan ke dalam chat
+    function addMessage(text, type) {
+        const messageDiv = document.createElement("div");
+        messageDiv.classList.add("flex", type === "user" ? "justify-end" : "items-start", "space-x-2");
+        messageDiv.innerHTML = `
+            <div class="${type === 'user' ? 'bg-gray-200 text-gray-900' : 'bg-green-500 text-white'} rounded-lg p-3 max-w-xs">
+                <p>${text}</p>
+            </div>
         `;
-        chatBox.appendChild(botBubble);
+        chatBox.appendChild(messageDiv);
         chatBox.scrollTop = chatBox.scrollHeight;
-      }, 1000);
+    }
+
+    // Fungsi untuk menampilkan indikator mengetik
+    function showTypingIndicator() {
+        const typingDiv = document.createElement("div");
+        typingDiv.classList.add("typing-indicator");
+        chatBox.appendChild(typingDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+        return typingDiv;
+    }
+
+    // Fungsi untuk menghapus indikator mengetik
+    function removeTypingIndicator(typingDiv) {
+        typingDiv.remove();
+    }
+
+    // Fungsi ketika tombol Kirim diklik
+    sendBtn.addEventListener("click", () => {
+        const userMessage = chatInput.value;
+        if (userMessage.trim() === "") return;
+
+        // Tampilkan pesan pengguna
+        addMessage(userMessage, "user");
+        chatInput.value = "";
+
+        // Tampilkan indikator mengetik untuk bot
+        const typingDiv = showTypingIndicator();
+
+        // Simulasikan pengiriman pesan ke backend dan mendapatkan respons
+        setTimeout(() => {
+            removeTypingIndicator(typingDiv);
+            // Ambil respons bot dari backend (ganti '/get' dengan endpoint API Anda)
+            fetch('/get?msg=' + encodeURIComponent(userMessage))
+                .then(response => response.text())
+                .then(data => {
+                    // Tampilkan respons bot
+                    addMessage(data, "bot");
+                })
+                .catch(error => {
+                    removeTypingIndicator(typingDiv);
+                    addMessage('Terjadi kesalahan: ' + error.message, "bot");
+                });
+        }, 1000);
     });
   </script>
 </body>
