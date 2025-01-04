@@ -87,6 +87,7 @@
         <a href="{{ url_for('settings') }}" class="{{ 'active' if request.endpoint == 'settings' else '' }}">Settings</a>
         <a href="{{ url_for('collectors') }}" class="{{ 'active' if request.endpoint == 'collectors' else '' }}">Collectors</a>
         <a href="{{ url_for('topup_requests') }}" class="{{ 'active' if request.endpoint == 'topup_requests' else '' }}">Top-Up Requests</a>
+        <a href="{{ url_for('sentimen') }}" class="{{ 'active' if request.endpoint == 'sentimen' else '' }}">Sentimen</a>
         <a href="{{ url_for('logout') }}">Logout</a>
     </div>
 

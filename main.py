@@ -425,6 +425,51 @@ def add_points(topup_id):
     # Render halaman untuk menambah poin
     return render_template('admin/add_points.html', topup_request=topup_request)
 
+#sentimen analis
+@app.route('/sentimen')
+def sentimen():
+
+      # Periksa apakah pengguna sudah login
+    if 'user_id' not in session:  # 'user_id' adalah contoh key untuk sesi login
+        return redirect(url_for('login_admin'))  # Redirect ke halaman login
+    
+    reviews = session.get('reviews', [])
+    
+    sentiment_results = []
+    for review in reviews:
+        predicted_class, probabilities = analyzer_indobert.predict_sentiment(review['text'])
+        sentiment = "Positif" if predicted_class == 1 else "Negatif"
+        sentiment_results.append({
+            "text": review['text'],
+            "sentiment": sentiment
+        })
+    
+    return render_template('admin/reviewsentimen.html', sentiment_results=sentiment_results)
+
+@app.route('/api/chat', methods=['POST'])
+def chat():
+    data = request.get_json()
+    message = data.get('msg')
+
+    # Check if message is present
+    if not message:
+        return jsonify({"error": "No input received."}), 400
+
+    # Ensure model and retriever are initialized
+    llm = app.config.get('llm')
+    retriever = app.config.get('retriever')
+
+    if not llm or not retriever:
+        return jsonify({"error": "Model or retriever is not initialized."}), 500
+
+    try:
+        # Create the RAG chain with the retriever and llm
+        rag_chain = create_rag_chain(retriever, llm)
+        response = rag_chain.invoke({"input": message})
+        return jsonify({"answer": response['answer']})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True)
