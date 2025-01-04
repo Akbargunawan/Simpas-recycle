@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simpas Artikel</title>
-    <link rel="icon" href="/static/images/logo awal.png" type="image/x-icon">
+    <link rel="icon" href="/static/images/logo_awal.png" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-white">
@@ -36,20 +36,21 @@
             <div class="bg-white rounded-lg shadow-lg p-4 sm:p-6 flex flex-col justify-between transform scale-100 hover:scale-105 transition duration-300 max-w-xs sm:max-w-sm mx-auto">
                 
                 <!-- Menampilkan gambar artikel jika ada -->
-                {% if article[3] %}
-                <img src="{{ url_for('static', filename='uploads/' + article[3]) }}" 
+                {% if article.image_filename %}
+                <img src="{{ url_for('static', filename='uploads/' + article.image_filename) }}" 
                      alt="Gambar Artikel" 
                      class="w-full h-48 object-cover rounded-lg mb-4">
                 {% endif %}
 
-                <h3 class="text-base sm:text-lg font-semibold text-black">{{ article[1] }}</h3>
+                <h3 class="text-base sm:text-lg font-semibold text-black">{{ article.title }}</h3>
                 <p class="mt-2 text-sm sm:text-base text-gray-600 flex-grow">
-                    {{ article[2][:150] }}...
+                    {{ article.content[:150] }}...
                 </p>
-                <a href="{{ url_for('article_detail', id=article[0]) }}" 
-                   class="mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-500 transition duration-300 self-end">
-                   Baca Selengkapnya
+                <a href="{{ url_for('article_detail', id=article['_id']|string) }}" 
+                class="mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-500 transition duration-300 self-end">
+                Baca Selengkapnya
                 </a>
+             
             </div>
             {% endfor %}
         </div>

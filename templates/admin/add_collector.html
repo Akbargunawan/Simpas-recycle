@@ -7,75 +7,75 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <style>
-    /* Styling Sidebar */
-    .sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 250px;
-        height: 100vh;
-        background-color: #343a40;
-        color: white;
-        padding-top: 50px; /* Distance from the top */
-        padding-left: 20px;
-        padding-right: 20px;
-    }
+        /* Styling Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100vh;
+            background-color: #28a745;
+            color: white;
+            padding-top: 50px; /* Distance from the top */
+            padding-left: 20px;
+            padding-right: 20px;
+        }
 
-    .sidebar h3 {
-        text-align: center; /* Menyelaraskan teks di tengah */
-        color: white;
-        font-size: 24px; /* Mengatur ukuran font */
-        margin-bottom: 30px; /* Memberikan jarak di bawah */
-    }
+        .sidebar h3 {
+            text-align: center; /* Menyelaraskan teks di tengah */
+            color: white;
+            font-size: 24px; /* Mengatur ukuran font */
+            margin-bottom: 30px; /* Memberikan jarak di bawah */
+        }
 
-    .sidebar a {
-        color: white;
-        text-decoration: none;
-        display: block;
-        margin-bottom: 15px;
-        padding: 10px 0;
-    }
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 15px;
+            padding: 10px 0;
+        }
 
-    .sidebar a:hover {
-        background-color: #495057;
-    }
+        .sidebar a:hover {
+            background-color: #218838;
+        }
 
-    .sidebar a.active {
-        background-color: #495057; /* Warna background saat aktif */
-        font-weight: bold; /* Menebalkan teks */
-    }
+        .sidebar a.active {
+            background-color: #218838; /* Warna background saat aktif */
+            font-weight: bold; /* Menebalkan teks */
+        }
 
-    /* Main content area (to prevent sidebar overlap) */
-    .main-content {
-        margin-left: 270px;  /* Give space for the sidebar */
-        padding: 20px;
-    }
+        /* Main content area (to prevent sidebar overlap) */
+        .main-content {
+            margin-left: 270px;  /* Give space for the sidebar */
+            padding: 20px;
+        }
 
-    /* Membatasi tinggi tabel dan menambahkan scroll vertikal */
-    .table-container {
-        max-height: 500px;
-        overflow-y: auto;  /* Menambahkan scroll vertikal */
-    }
+        /* Membatasi tinggi tabel dan menambahkan scroll vertikal */
+        .table-container {
+            max-height: 500px;
+            overflow-y: auto;  /* Menambahkan scroll vertikal */
+        }
 
-    /* Membuat tabel scrollable horizontal */
-    .table-wrapper {
-        overflow-x: auto;  /* Menambahkan scroll horizontal jika lebar tabel melebihi layar */
-    }
+        /* Membuat tabel scrollable horizontal */
+        .table-wrapper {
+            overflow-x: auto;  /* Menambahkan scroll horizontal jika lebar tabel melebihi layar */
+        }
 
-    table {
-        table-layout: fixed;
-    }
+        table {
+            table-layout: fixed;
+        }
 
-    td, th {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;  /* Memastikan teks tidak meluber ke luar */
-    }
+        td, th {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;  /* Memastikan teks tidak meluber ke luar */
+        }
 
-    .table img {
-        max-width: 100px; /* Membatasi ukuran gambar */
-        height: auto;
-    }
+        .table img {
+            max-width: 100px; /* Membatasi ukuran gambar */
+            height: auto;
+        }
 </style>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center">
     <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
@@ -100,15 +100,15 @@
         {% endwith %}
 
             <!-- Sidebar -->
-    <div class="sidebar">
-        <h3>Hi Admin Simpas</h3>
-        <a href="{{ url_for('admin_dashboard') }}" class="{{ 'active' if request.endpoint == 'admin_dashboard' else '' }}">Dashboard</a>
-        <a href="{{ url_for('articles') }}" class="{{ 'active' if request.endpoint == 'articles' else '' }}">Articles</a>
-        <a href="{ url_for('settings') }">Settings</a>
-        <a href="{{ url_for('add_collector') }}" class="{{ 'active' if request.endpoint == 'add_collcector' else '' }}">Add Collector</a>
-        <a href="{{ url_for('collectors') }}" class="{{ 'active' if request.endpoint == 'collectors' else '' }}">Pengepul</a>
-        <a href="{{ url_for('logout') }}">Logout</a>  <!-- Logout link -->
-    </div>  
+            <div class="sidebar">
+                <h3>Hi Admin Simpas</h3>
+                <a href="{{ url_for('admin_dashboard') }}" class="{{ 'active' if request.endpoint == 'admin_dashboard' else '' }}">Dashboard</a>
+                <a href="{{ url_for('articles') }}" class="{{ 'active' if request.endpoint == 'articles' else '' }}">Articles</a>
+                <a href="{{ url_for('settings') }}" class="{{ 'active' if request.endpoint == 'settings' else '' }}">Settings</a>
+                <a href="{{ url_for('collectors') }}" class="{{ 'active' if request.endpoint == 'collectors' else '' }}">Collectors</a>
+                <a href="{{ url_for('topup_requests') }}" class="{{ 'active' if request.endpoint == 'topup_requests' else '' }}">Top-Up Requests</a>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            </div>
 
  
         <form action="{{ url_for('add_collector') }}" method="POST" class="space-y-4">

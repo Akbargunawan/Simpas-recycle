@@ -82,32 +82,49 @@
 
     // Fungsi ketika tombol Kirim diklik
     sendBtn.addEventListener("click", () => {
-        const userMessage = chatInput.value;
-        if (userMessage.trim() === "") return;
-
-        // Tampilkan pesan pengguna
-        addMessage(userMessage, "user");
-        chatInput.value = "";
-
-        // Tampilkan indikator mengetik untuk bot
-        const typingDiv = showTypingIndicator();
-
-        // Simulasikan pengiriman pesan ke backend dan mendapatkan respons
-        setTimeout(() => {
-            removeTypingIndicator(typingDiv);
-            // Ambil respons bot dari backend (ganti '/get' dengan endpoint API Anda)
-            fetch('/get?msg=' + encodeURIComponent(userMessage))
-                .then(response => response.text())
-                .then(data => {
-                    // Tampilkan respons bot
-                    addMessage(data, "bot");
-                })
-                .catch(error => {
-                    removeTypingIndicator(typingDiv);
-                    addMessage('Terjadi kesalahan: ' + error.message, "bot");
-                });
-        }, 1000);
+        sendMessage();
     });
+
+    // Fungsi untuk menangani kirim pesan
+    function sendMessage() {
+    const userMessage = chatInput.value;
+    console.log("Pesan dikirim:", userMessage);  // Debugging line
+    if (userMessage.trim() === "") return;
+
+    // Tampilkan pesan pengguna
+    addMessage(userMessage, "user");
+    chatInput.value = "";
+
+    // Tampilkan indikator mengetik untuk bot
+    const typingDiv = showTypingIndicator();
+
+    // Simulasikan pengiriman pesan ke backend dan mendapatkan respons
+    setTimeout(() => {
+        removeTypingIndicator(typingDiv);
+        // Ambil respons bot dari backend (ganti '/get' dengan endpoint API Anda)
+        fetch('/get?msg=' + encodeURIComponent(userMessage))
+            .then(response => response.text())
+            .then(data => {
+                // Tampilkan respons bot
+                addMessage(data, "bot");
+            })
+            .catch(error => {
+                removeTypingIndicator(typingDiv);
+                addMessage('Terjadi kesalahan: ' + error.message, "bot");
+            });
+    }, 1000);
+}
+
+
+    // Fungsi untuk mendeteksi Enter
+    chatInput.addEventListener("keydown", (event) => {
+    console.log("Tombol ditekan:", event.key);  // Debugging line
+    if (event.key === "Enter") {
+        event.preventDefault(); // Mencegah form submit jika ada
+        sendMessage();
+    }
+});
+
   </script>
 </body>
 </html>

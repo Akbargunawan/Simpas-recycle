@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ article[0] }}</title>
+  <title>{{ article['title'] }}</title>
   <link rel="icon" href="/static/images/logo awal.png" type="image/x-icon">
   <link href="/static/css/main.css" rel="stylesheet">
 </head>
@@ -23,20 +23,20 @@
   <!-- Konten artikel -->
   <div class="pt-16 max-w-4xl mx-auto">
     <h1 class="text-4xl font-semibold text-center text-black mb-10">
-      {{ article[0] }}
+      {{ article['title'] }}
     </h1>
 
-    {% if article[2] %}
+    {% if article['image_filename'] %}
       <div class="mb-6">
         <!-- Gambar dengan ukuran memanjang -->
-        <img src="{{ url_for('static', filename='uploads/' + article[2]) }}" 
+        <img src="{{ url_for('static', filename='uploads/' + article['image_filename']) }}" 
              alt="Gambar Artikel" 
              class="w-full h-[900px] object-cover rounded-lg shadow-md">
       </div>
     {% endif %}
 
     <!-- Isi Artikel -->
-    <p class="text-sm sm:text-base text-black mb-6">{{ article[1] }}</p>
+    <p class="text-sm sm:text-base text-black mb-6">{{ article['content'] }}</p>
   </div>
 </body>
 </html>
