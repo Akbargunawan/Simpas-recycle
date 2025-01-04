@@ -7,44 +7,75 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <style>
-    /* Styling Sidebar */
-    .sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 250px;
-        height: 100vh;
-        background-color: #28a745;
-        color: white;
-        padding-top: 50px;
-        padding-left: 20px;
-        padding-right: 20px;
-        z-index: 10;
-    }
+        /* Styling Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100vh;
+            background-color: #28a745;
+            color: white;
+            padding-top: 50px; /* Distance from the top */
+            padding-left: 20px;
+            padding-right: 20px;
+        }
 
-    .sidebar h3 {
-        text-align: center;
-        color: white;
-        font-size: 24px;
-        margin-bottom: 30px;
-    }
+        .sidebar h3 {
+            text-align: center; /* Menyelaraskan teks di tengah */
+            color: white;
+            font-size: 24px; /* Mengatur ukuran font */
+            margin-bottom: 30px; /* Memberikan jarak di bawah */
+        }
 
-    .sidebar a {
-        color: white;
-        text-decoration: none;
-        display: block;
-        margin-bottom: 15px;
-        padding: 10px 0;
-    }
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 15px;
+            padding: 10px 0;
+        }
 
-    .sidebar a:hover {
-        background-color: #218838;
-    }
+        .sidebar a:hover {
+            background-color: #218838;
+        }
 
-    .sidebar a.active {
-        background-color: #218838;
-        font-weight: bold;
-    }
+        .sidebar a.active {
+            background-color: #218838; /* Warna background saat aktif */
+            font-weight: bold; /* Menebalkan teks */
+        }
+
+        /* Main content area (to prevent sidebar overlap) */
+        .main-content {
+            margin-left: 270px;  /* Give space for the sidebar */
+            padding: 20px;
+        }
+
+        /* Membatasi tinggi tabel dan menambahkan scroll vertikal */
+        .table-container {
+            max-height: 500px;
+            overflow-y: auto;  /* Menambahkan scroll vertikal */
+        }
+
+        /* Membuat tabel scrollable horizontal */
+        .table-wrapper {
+            overflow-x: auto;  /* Menambahkan scroll horizontal jika lebar tabel melebihi layar */
+        }
+
+        table {
+            table-layout: fixed;
+        }
+
+        td, th {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;  /* Memastikan teks tidak meluber ke luar */
+        }
+
+        .table img {
+            max-width: 100px; /* Membatasi ukuran gambar */
+            height: auto;
+        }
 </style>
 
 <body class="bg-gray-100 min-h-screen flex flex-col">
@@ -88,13 +119,13 @@
                         <tbody>
                             {% for collector in collectors %}
                             <tr class="border-t border-gray-200">
-                                <td class="py-2 px-4 text-sm text-gray-700">{{ collector[0] }}</td>
-                                <td class="py-2 px-4 text-sm text-gray-700">{{ collector[1] }}</td>
-                                <td class="py-2 px-4 text-sm text-gray-700">{{ collector[2] }}</td>
-                                <td class="py-2 px-4 text-sm text-gray-700">{{ collector[3] }}</td>
+                                <td class="py-2 px-4 text-sm text-gray-700">{{ collector['_id'] }}</td>  <!-- ID Collector -->
+                                <td class="py-2 px-4 text-sm text-gray-700">{{ collector['name'] }}</td> <!-- Nama -->
+                                <td class="py-2 px-4 text-sm text-gray-700">{{ collector['email'] }}</td> <!-- Email -->
+                                <td class="py-2 px-4 text-sm text-gray-700">{{ collector['address'] }}</td> <!-- Alamat -->
                                 <td class="py-2 px-4 text-center">
-                                    <a href="{{ url_for('edit_collector', id=collector[0]) }}" class="text-blue-600 hover:underline">Edit</a> |
-                                    <a href="{{ url_for('delete_collector', id=collector[0]) }}" class="text-red-600 hover:underline">Delete</a>
+                                    <a href="{{ url_for('edit_collector', id=collector['_id']) }}" class="text-blue-600 hover:underline">Edit</a> |
+                                    <a href="{{ url_for('delete_collector', id=collector['_id']) }}" class="text-red-600 hover:underline">Delete</a>
                                 </td>
                             </tr>
                             {% else %}
