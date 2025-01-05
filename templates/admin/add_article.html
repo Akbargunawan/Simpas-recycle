@@ -6,9 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Article</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Style untuk tombol Back */
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .back-btn:hover {
+            background-color: #218838;
+        }
+
+        /* Memberikan jarak untuk konten di bawah tombol Back */
+        .container {
+            margin-top: 80px;  /* Memberikan jarak agar tidak tumpang tindih dengan tombol */
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-5">
+     <!-- Tombol Back -->
+     <a href="{{ url_for('articles') }}">
+        <button class="back-btn">Back</button>
+    </a>
+
+    <div class="container mt-20">
         <h2 class="mb-4">Add New Article</h2>
         <form method="POST" enctype="multipart/form-data">
             <div class="mb-3">

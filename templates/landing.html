@@ -26,165 +26,188 @@
 </head>
 <body class="bg-white text-white">
 
-   <!-- Navbar -->
-<nav class="bg-green-600 shadow fixed w-full z-10">
+<!-- Navbar -->
+<nav class="bg-green-600 shadow fixed w-full z-10 top-0">
     <div class="max-w-screen-xl mx-auto px-4 py-4">
         <div class="flex justify-between items-center">
             <!-- Logo -->
             <div class="text-lg font-bold text-white">SIMPAS</div>
 
+            <!-- Mobile Menu Button -->
+            <button id="menu-toggle" class="lg:hidden text-white focus:outline-none">
+                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/>
+                </svg>
+            </button>
+
             <!-- Navigation Links -->
-            <div class="flex items-center space-x-6">
-                <ul class="flex space-x-6">
-                    <li><a href="#home" class="text-white hover:text-gray-200">Home</a></li>
-                    <li><a href="#fitur" class="text-white hover:text-gray-200">Fitur</a></li>
-                    <li><a href="#about" class="text-white hover:text-gray-200">About</a></li>
-                    <li><a href="#article" class="text-white hover:text-gray-200">Article</a></li>
-                    <li><a href="#contact" class="text-white hover:text-gray-200">Contact</a></li>
+            <div id="menu" class="fixed top-0 right-0 w-3/4 h-full bg-green-600 transform translate-x-full transition-transform duration-300 lg:relative lg:translate-x-0 lg:flex lg:items-center lg:space-x-6">
+                <!-- Close Button (Mobile Only) -->
+                <div class="flex justify-end p-4 lg:hidden">
+                    <button id="menu-close" class="text-white focus:outline-none">
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <ul class="flex flex-col space-y-4 p-6 lg:flex-row lg:space-y-0 lg:space-x-6 lg:p-0">
+                    <li><a href="#home" class="block text-white hover:text-gray-200 py-2 lg:py-0">Home</a></li>
+                    <li><a href="#fitur" class="block text-white hover:text-gray-200 py-2 lg:py-0">Fitur</a></li>
+                    <li><a href="#about" class="block text-white hover:text-gray-200 py-2 lg:py-0">About</a></li>
+                    <li><a href="#article" class="block text-white hover:text-gray-200 py-2 lg:py-0">Article</a></li>
+                    <li><a href="#contact" class="block text-white hover:text-gray-200 py-2 lg:py-0">Contact</a></li>
                 </ul>
 
-                <!-- Button -->
+                <!-- Button (Inside Menu Toggle) -->
                 <a href="https://docs.google.com/forms/d/e/1FAIpQLSeGrAPqkjH74n5AbNbft6FdkTvXtyvovxo9EtKRVdU41v59GQ/viewform?usp=header" 
-                    class="px-6 py-2 font-semibold text-green-600 bg-white rounded-full hover:bg-gray-200 transition duration-300 transform hover:scale-105">
+                    class="block w-full text-center px-6 py-2 font-semibold text-white bg-green-500 rounded-full hover:bg-green-700 transition duration-300 transform hover:scale-105 mt-4 lg:mt-0">
                     Daftar sebagai Pengepul
                 </a>
             </div>
         </div>
     </div>
 </nav>
-    
-  <!-- Header Section -->
-  <div id="home" class="flex flex-col md:flex-row items-center justify-center h-screen p-8 bg-white">
-    <div class="md:w-1/2 space-y-5">
+ 
+<!-- Header Section -->
+<div id="home" class="flex flex-col md:flex-row items-center justify-center h-screen p-8 bg-white pt-24 md:pt-0">
+    <div class="md:w-1/2 space-y-5 px-4 md:px-0">
         <!-- Menyembunyikan h1 di perangkat mobile -->
-        <h1 class="text-4xl font-bold md:text-5xl text-black md:block hidden">Sistem Informasi Sampah</h1>
-        <p class="text-lg text-gray-500">Aplikasi sistem informasi sampah modern dilengkapi dengan fitur deteksi yang memungkinkan pengguna untuk mengidentifikasi jenis-jenis sampah, seperti sampah organik, dan anorganik.</p>
-        <p class="text-lg text-gray-500">Unduh aplikasi ini untuk melakukan penjualan sampah.</p>
+        <h1 class="text-3xl font-bold md:text-4xl text-black md:block hidden">Sistem Informasi Sampah</h1>
+        <p class="text-base md:text-lg text-gray-500">
+            Aplikasi sistem informasi sampah modern dilengkapi dengan fitur deteksi yang memungkinkan pengguna untuk mengidentifikasi jenis-jenis sampah, seperti sampah organik, dan anorganik.
+        </p>
+        <p class="text-base md:text-lg text-gray-500">
+            Unduh aplikasi ini untuk melakukan penjualan sampah.
+        </p>
         <div class="flex flex-col md:flex-row md:space-x-4">
-            <a href="{{ url_for('chatbot') }}" class="mb-4 md:mb-0 px-4 py-2 font-semibold text-gray-800 bg-gray-200 rounded hover:bg-gray-400 transition duration-300 transform hover:scale-105 text-center">Chat Bot</a>
-            <button class="px-4 py-2 font-semibold text-white bg-green-600 rounded hover:bg-green-800 transition duration-300 transform hover:scale-105">Unduh Aplikasi</button>
+            <a href="{{ url_for('chatbot') }}" class="mb-4 md:mb-0 px-4 py-2 font-semibold text-gray-800 bg-gray-200 rounded-full hover:bg-gray-400 transition duration-300 transform hover:scale-105 text-center">Chat Bot</a>
+            <button class="px-4 py-2 font-semibold text-white bg-green-600 rounded-full hover:bg-green-800 transition duration-300 transform hover:scale-105">Unduh Aplikasi</button>
         </div>                    
     </div>
-        <div class="mt-8 md:mt-0 md:w-1/2 flex justify-center">
-         <img src="/static/images/logoLogin.png" alt="Logo" class="w-2/3">
-        </div> 
-    </div>
+    <div class="mt-8 md:mt-0 md:w-1/2 flex justify-center">
+        <img src="/static/images/logoLogin.png" alt="Logo" class="w-2/3 md:w-1/2">
+    </div> 
+</div>
 
-
-      <!-- Fitur Section -->
-      <div id="fitur" class="relative overflow-hidden bg-green-600 min-h-screen overflow-y-auto">
-        <svg class="absolute top-0 left-0 w-full" viewBox="0 0 1440 320">
-            <path 
-                class="animate-wave" 
-                fill="white" 
-                d="M0,64C80,128,240,192,360,192C480,192,640,128,720,96C800,64,960,64,1080,96C1200,128,1320,192,1440,256L1440,0L0,0Z">
-            </path>
-        </svg>
-        <div class="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 py-16 md:py-0">
-            <h2 class="text-3xl font-bold text-white mb-8 mt-16 text-center">Mari Bergerak!</h2>
-            <p class="text-lg text-white mb-8 text-center px-2 md:px-0">Temukan berbagai fitur inovatif yang dirancang untuk membantu Anda mengelola sampah.</p>
-            
-            <!-- Grid dengan fitur-fitur -->
-            <div class="max-w-screen-xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-8">
-                <div class="bg-gray-100 rounded-lg shadow-lg p-4 sm:p-6 text-center transform scale-100 hover:scale-105 transition duration-300 max-w-xs sm:max-w-sm mx-auto">
-                    <img src="/static/images/iconklasifikasi.png" alt="Klasifikasi" class="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4">
-                    <h3 class="text-base sm:text-lg font-semibold text-black">Klasifikasi</h3>
-                    <p class="mt-2 text-sm sm:text-base text-gray-600">Fitur klasifikasi untuk membantu pengguna mengenali jenis sampah.</p>
-                </div>
-                <div class="bg-gray-100 rounded-lg shadow-lg p-4 sm:p-6 text-center transform scale-100 hover:scale-105 transition duration-300 max-w-xs sm:max-w-sm mx-auto">
-                    <img src="/static/images/iconsale.png" alt="Penjualan" class="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4">
-                    <h3 class="text-base sm:text-lg font-semibold text-black">Penjualan</h3>
-                    <p class="mt-2 text-sm sm:text-base text-gray-600">Fitur penjualan untuk memudahkan transaksi sampah dengan pengepul sampah.</p>
-                </div>
-                <div class="bg-gray-100 rounded-lg shadow-lg p-4 sm:p-6 text-center transform scale-100 hover:scale-105 transition duration-300 max-w-xs sm:max-w-sm mx-auto">
-                    <img src="/static/images/iconchatbot.png" alt="Chatbot" class="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4">
-                    <h3 class="text-base sm:text-lg font-semibold text-black">Chatbot</h3>
-                    <p class="mt-2 text-sm sm:text-base text-gray-600">Fitur chatbot untuk memberikan bantuan interaktif kepada pengguna.</p>
-                </div>
+    
+<!-- Fitur Section -->
+<div id="fitur" class="relative overflow-hidden bg-green-600 min-h-screen overflow-y-auto">
+    <svg class="absolute top-0 left-0 w-full" viewBox="0 0 1440 320">
+        <path 
+            class="animate-wave" 
+            fill="white" 
+            d="M0,64C80,128,240,192,360,192C480,192,640,128,720,96C800,64,960,64,1080,96C1200,128,1320,192,1440,256L1440,0L0,0Z">
+        </path>
+    </svg>
+    <div class="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 py-16 md:py-0">
+        <h2 class="text-2xl font-semibold md:text-3xl text-white mb-8 mt-16 text-center">Mari Bergerak!</h2>
+        <p class="text-base md:text-lg text-white mb-8 text-center px-2 md:px-0">Temukan berbagai fitur inovatif yang dirancang untuk membantu Anda mengelola sampah.</p>
+        
+        <!-- Grid dengan fitur-fitur -->
+        <div class="max-w-screen-xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-8">
+            <div class="bg-gray-100 rounded-lg shadow-lg p-4 sm:p-6 text-center transform scale-100 hover:scale-105 transition duration-300 max-w-xs sm:max-w-sm mx-auto">
+                <img src="/static/images/iconklasifikasi.png" alt="Klasifikasi" class="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4">
+                <h3 class="text-sm sm:text-base font-semibold text-black">Klasifikasi</h3>
+                <p class="mt-2 text-xs sm:text-sm text-gray-600">Fitur klasifikasi untuk membantu pengguna mengenali jenis sampah.</p>
+            </div>
+            <div class="bg-gray-100 rounded-lg shadow-lg p-4 sm:p-6 text-center transform scale-100 hover:scale-105 transition duration-300 max-w-xs sm:max-w-sm mx-auto">
+                <img src="/static/images/iconsale.png" alt="Penjualan" class="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4">
+                <h3 class="text-sm sm:text-base font-semibold text-black">Penjualan</h3>
+                <p class="mt-2 text-xs sm:text-sm text-gray-600">Fitur penjualan untuk memudahkan transaksi sampah dengan pengepul sampah.</p>
+            </div>
+            <div class="bg-gray-100 rounded-lg shadow-lg p-4 sm:p-6 text-center transform scale-100 hover:scale-105 transition duration-300 max-w-xs sm:max-w-sm mx-auto">
+                <img src="/static/images/iconchatbot.png" alt="Chatbot" class="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4">
+                <h3 class="text-sm sm:text-base font-semibold text-black">Chatbot</h3>
+                <p class="mt-2 text-xs sm:text-sm text-gray-600">Fitur chatbot untuk memberikan bantuan interaktif kepada pengguna.</p>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- About -->
-    <div id="about" class="w-full max-w-lg mx-auto p-4 mt-14 ">
-        <h2 class="text-3xl md:text-4xl font-bold text-center mb-6 text-gray-800">
-            Tentang Aplikasi Sistem Informasi Sampah
-          </h2>
-         <p class="text-gray-700 mb-6">
-          Aplikasi Sistem Informasi Sampah adalah solusi inovatif yang dirancang untuk membantu pengelolaan sampah secara efisien. Dengan fitur canggih, aplikasi ini memungkinkan pengguna untuk mengelola data sampah, melacak pengumpulan, dan menerima notifikasi tentang jadwal pengambilan sampah.
-        </p>
-      <h3 class="text-2xl font-semibold text-center mb-4 text-black">Fitur Utama</h3>
+<!-- About -->
+<div id="about" class="w-full max-w-lg mx-auto p-4 mt-14">
+    <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-6 text-gray-800">
+        Tentang Aplikasi Sistem Informasi Sampah
+    </h2>
+    <p class="text-sm sm:text-base text-gray-700 mb-6">
+        Aplikasi Sistem Informasi Sampah adalah solusi inovatif yang dirancang untuk membantu pengelolaan sampah secara efisien. Dengan fitur canggih, aplikasi ini memungkinkan pengguna untuk mengelola data sampah, melacak pengumpulan, dan menerima notifikasi tentang jadwal pengambilan sampah.
+    </p>
+    <h3 class="text-xl sm:text-2xl font-semibold text-center mb-4 text-black">Fitur Utama</h3>
+
+    <!-- Checkbox Collapse Menu Item 1 -->
+    <div class="border border-gray-300 rounded-md mb-2">
+        <input type="checkbox" id="question1" class="hidden peer">
+        <label for="question1" class="w-full text-left p-4 flex justify-between items-center cursor-pointer text-gray-800">
+            <span class="font-semibold text-sm sm:text-base">Bagaimana cara aplikasi ini mengelola data sampah?</span>
+            <svg class="w-5 h-5 transition-transform peer-checked:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+        </label>
+        <div class="p-4 border-t border-gray-300 text-gray-800 hidden peer-checked:block">
+            <h1 class="text-base sm:text-lg font-bold mb-2">Pengelolaan Data Sampah</h1>
+            Aplikasi ini mengelola data sampah dengan menyimpan informasi tentang jenis sampah, volume, lokasi pengumpulan, dan status pengangkutan, serta menyediakan laporan berkala untuk analisis lebih lanjut.
+        </div>
+    </div>
+
+    <!-- Checkbox Collapse Menu Item 2 -->
+    <div class="border border-gray-300 rounded-md mb-2">
+        <input type="checkbox" id="question2" class="hidden peer">
+        <label for="question2" class="w-full text-left p-4 flex justify-between items-center cursor-pointer text-gray-800">
+            <span class="font-semibold text-sm sm:text-base">Apakah aplikasi ini mendukung notifikasi pengambilan sampah?</span>
+            <svg class="w-5 h-5 transition-transform peer-checked:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+        </label>
+        <div class="p-4 border-t border-gray-300 text-gray-800 hidden peer-checked:block">
+            <h1 class="text-base sm:text-lg font-bold mb-2">Notifikasi Pengambilan Sampah</h1>
+            Aplikasi ini memiliki fitur notifikasi yang akan mengingatkan pengguna tentang jadwal pengambilan sampah di lokasi mereka, sehingga memudahkan pengguna untuk tetap terinformasi.
+        </div>
+    </div>
+
+    <!-- Checkbox Collapse Menu Item 3 -->
+    <div class="border border-gray-300 rounded-md mb-2">
+        <input type="checkbox" id="question3" class="hidden peer">
+        <label for="question3" class="w-full text-left p-4 flex justify-between items-center cursor-pointer text-gray-800">
+            <span class="font-semibold text-sm sm:text-base">Bagaimana cara melacak lokasi pengumpulan sampah?</span>
+            <svg class="w-5 h-5 transition-transform peer-checked:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+        </label>
+        <div class="p-4 border-t border-gray-300 text-gray-800 hidden peer-checked:block">
+            <h1 class="text-base sm:text-lg font-bold mb-2">Pelacakan Lokasi Pengumpulan</h1>
+            Pengguna dapat melacak lokasi pengumpulan sampah melalui fitur peta di aplikasi ini, yang menunjukkan rute dan lokasi truk sampah secara real-time.
+        </div>
+    </div>
+
+    <!-- Checkbox Collapse Menu Item 4 -->
+    <div class="border border-gray-300 rounded-md mb-2">
+        <input type="checkbox" id="question4" class="hidden peer">
+        <label for="question4" class="w-full text-left p-4 flex justify-between items-center cursor-pointer text-gray-800">
+            <span class="font-semibold text-sm sm:text-base">Apa saja jenis sampah yang didukung oleh aplikasi ini?</span>
+            <svg class="w-5 h-5 transition-transform peer-checked:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+        </label>
+        <div class="p-4 border-t border-gray-300 text-gray-800 hidden peer-checked:block">
+            <h1 class="text-base sm:text-lg font-bold mb-2">Jenis Sampah yang Didukung</h1>
+            Aplikasi ini mendukung pengelolaan berbagai jenis sampah, termasuk sampah organik, anorganik, dan berbahaya, sesuai dengan regulasi pengelolaan sampah setempat.
+        </div>
+    </div>
+</div>
+
   
-      <!-- Checkbox Collapse Menu Item 1 -->
-      <div class="border border-gray-300 rounded-md mb-2">
-          <input type="checkbox" id="question1" class="hidden peer">
-          <label for="question1" class="w-full text-left p-4 flex justify-between items-center cursor-pointer text-gray-800">
-              <span class="font-semibold">Bagaimana cara aplikasi ini mengelola data sampah?</span>
-              <svg class="w-5 h-5 transition-transform peer-checked:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-              </svg>
-          </label>
-          <div class="p-4 border-t border-gray-300 text-gray-800 hidden peer-checked:block">
-              <h1 class="text-lg font-bold mb-2">Pengelolaan Data Sampah</h1>
-              Aplikasi ini mengelola data sampah dengan menyimpan informasi tentang jenis sampah, volume, lokasi pengumpulan, dan status pengangkutan, serta menyediakan laporan berkala untuk analisis lebih lanjut.
-          </div>
-      </div>
-  
-      <!-- Checkbox Collapse Menu Item 2 -->
-      <div class="border border-gray-300 rounded-md mb-2">
-          <input type="checkbox" id="question2" class="hidden peer">
-          <label for="question2" class="w-full text-left p-4 flex justify-between items-center cursor-pointer text-gray-800">
-              <span class="font-semibold">Apakah aplikasi ini mendukung notifikasi pengambilan sampah?</span>
-              <svg class="w-5 h-5 transition-transform peer-checked:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-              </svg>
-          </label>
-          <div class="p-4 border-t border-gray-300 text-gray-800 hidden peer-checked:block">
-              <h1 class="text-lg font-bold mb-2">Notifikasi Pengambilan Sampah</h1>
-              Aplikasi ini memiliki fitur notifikasi yang akan mengingatkan pengguna tentang jadwal pengambilan sampah di lokasi mereka, sehingga memudahkan pengguna untuk tetap terinformasi.
-          </div>
-      </div>
-  
-      <!-- Checkbox Collapse Menu Item 3 -->
-      <div class="border border-gray-300 rounded-md mb-2">
-          <input type="checkbox" id="question3" class="hidden peer">
-          <label for="question3" class="w-full text-left p-4 flex justify-between items-center cursor-pointer text-gray-800">
-              <span class="font-semibold">Bagaimana cara melacak lokasi pengumpulan sampah?</span>
-              <svg class="w-5 h-5 transition-transform peer-checked:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-              </svg>
-          </label>
-          <div class="p-4 border-t border-gray-300 text-gray-800 hidden peer-checked:block">
-              <h1 class="text-lg font-bold mb-2">Pelacakan Lokasi Pengumpulan</h1>
-              Pengguna dapat melacak lokasi pengumpulan sampah melalui fitur peta di aplikasi ini, yang menunjukkan rute dan lokasi truk sampah secara real-time.
-          </div>
-      </div>
-  
-      <!-- Checkbox Collapse Menu Item 4 -->
-      <div class="border border-gray-300 rounded-md mb-2">
-          <input type="checkbox" id="question4" class="hidden peer">
-          <label for="question4" class="w-full text-left p-4 flex justify-between items-center cursor-pointer text-gray-800">
-              <span class="font-semibold">Apa saja jenis sampah yang didukung oleh aplikasi ini?</span>
-              <svg class="w-5 h-5 transition-transform peer-checked:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-              </svg>
-          </label>
-          <div class="p-4 border-t border-gray-300 text-gray-800 hidden peer-checked:block">
-              <h1 class="text-lg font-bold mb-2">Jenis Sampah yang Didukung</h1>
-              Aplikasi ini mendukung pengelolaan berbagai jenis sampah, termasuk sampah organik, anorganik, dan berbahaya, sesuai dengan regulasi pengelolaan sampah setempat.
-          </div>
-      </div>
-  </div>
-  
-  <!-- Full-width Bottom Border -->
-  <div class="border-b border-gray-400 w-full mt-4"></div>
-  
-  <div id="article" class="text-center text-black max-w-4xl mx-auto space-y-12">
+<!-- Full-width Bottom Border -->
+<div class="border-b border-gray-400 w-full mt-4"></div>
+
+<!-- artikel section -->
+<div id="article" class="text-center text-black max-w-4xl mx-auto space-y-12 px-4">
     <!-- Title -->
-    <h1 class="text-3xl mt-20 font-semibold">
+    <h1 class="text-xl md:text-3xl font-bold text-center mb-6 mt-10 text-gray-800">
         Anda dapat mengunjungi Artikel berikut ini
     </h1>
-
+    
+    
     <!-- Main Content -->
     <div class="flex flex-col md:flex-row items-center justify-center space-y-8 md:space-x-16 md:space-y-0">
       <!-- Form Preview (Image) -->
@@ -198,22 +221,19 @@
 
       <!-- Description -->
       <div class="text-left max-w-md space-y-4 px-4">
-        <h2 class="text-3xl font-semibold">Artikel Menarik</h2>
-        <p class="text-gray-700 text-lg">
+        <h2 class="text-xl md:text-2xl font-semibold text-gray-800">Artikel Menarik</h2>
+        <p class="text-gray-700 text-base md:text-lg leading-relaxed">
             Apakah Anda tahu ke mana perginya sampah setelah kita membuangnya? Atau bagaimana pengelolaan sampah yang tepat bisa berdampak besar pada lingkungan kita? Dalam artikel ini, kami membahas lebih dalam mengenai sampah dan bagaimana kita semua bisa berkontribusi untuk menciptakan dunia yang lebih bersih dan sehat.
         </p>
-        <a href="{{ url_for('artikel') }}" class="text-blue-600 hover:underline text-lg">Lihat list artikel-></a>
+        <a href="{{ url_for('artikel') }}" class="text-blue-600 hover:underline text-base md:text-lg">Lihat list artikel-></a>
       </div>
     </div>
 </div>
 
-
-     <!-- Curved SVG -->
-      <svg class="w-full text-green-600" viewBox="0 0 1440 320">
-         <path fill="currentColor" d="M0,180L48,185C96,190,192,200,288,190C384,180,480,150,576,130C672,110,768,100,864,110C960,120,1056,150,1152,160C1248,170,1344,160,1392,150L1440,140L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-      </svg>
-     </div>
-</div>
+<!-- Curved SVG -->
+<svg class="w-full text-green-600 mt-12" viewBox="0 0 1440 320">
+    <path fill="currentColor" d="M0,180L48,185C96,190,192,200,288,190C384,180,480,150,576,130C672,110,768,100,864,110C960,120,1056,150,1152,160C1248,170,1344,160,1392,150L1440,140L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+</svg>
 
 
     <div id="contact" class="bg-green-600 text-white">
@@ -236,6 +256,25 @@
           <p class="text-center">Ikuti kami di media sosial untuk mendapatkan informasi terbaru.</p>
       </div>
   </div>
+
+<!-- Tailwind CSS Script -->
+<script>
+    const menuToggle = document.getElementById('menu-toggle');
+    const menuClose = document.getElementById('menu-close');
+    const menu = document.getElementById('menu');
+
+    // Show menu on toggle button click
+    menuToggle.addEventListener('click', () => {
+        menu.classList.remove('translate-x-full');
+        menu.classList.add('translate-x-0');
+    });
+
+    // Hide menu on close button click
+    menuClose.addEventListener('click', () => {
+        menu.classList.add('translate-x-full');
+        menu.classList.remove('translate-x-0');
+    });
+</script>
   
 </body>
 </html>

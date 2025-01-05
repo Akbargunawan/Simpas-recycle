@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Collectors List</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<style>
-        /* Styling Sidebar */
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Sidebar Styling */
         .sidebar {
             position: fixed;
             top: 0;
@@ -16,16 +15,23 @@
             height: 100vh;
             background-color: #28a745;
             color: white;
-            padding-top: 50px; /* Distance from the top */
+            padding-top: 50px;
             padding-left: 20px;
             padding-right: 20px;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: none; /* Initially hidden */
+        }
+
+        .sidebar.show {
+            display: block; /* Show when active */
         }
 
         .sidebar h3 {
-            text-align: center; /* Menyelaraskan teks di tengah */
+            text-align: center;
             color: white;
-            font-size: 24px; /* Mengatur ukuran font */
-            margin-bottom: 30px; /* Memberikan jarak di bawah */
+            font-size: 24px;
+            margin-bottom: 30px;
         }
 
         .sidebar a {
@@ -41,27 +47,19 @@
         }
 
         .sidebar a.active {
-            background-color: #218838; /* Warna background saat aktif */
-            font-weight: bold; /* Menebalkan teks */
+            background-color: #218838;
+            font-weight: bold;
         }
 
-        /* Main content area (to prevent sidebar overlap) */
+        /* Main Content Styling */
         .main-content {
-            margin-left: 270px;  /* Give space for the sidebar */
+            margin-left: 0;
             padding: 20px;
+            transition: margin-left 0.3s ease;
+            margin-top: 50px; /* Tambahkan margin-top untuk memberi ruang lebih banyak ke bawah */
         }
 
-        /* Membatasi tinggi tabel dan menambahkan scroll vertikal */
-        .table-container {
-            max-height: 500px;
-            overflow-y: auto;  /* Menambahkan scroll vertikal */
-        }
-
-        /* Membuat tabel scrollable horizontal */
-        .table-wrapper {
-            overflow-x: auto;  /* Menambahkan scroll horizontal jika lebar tabel melebihi layar */
-        }
-
+        /* Table Styling */
         table {
             table-layout: fixed;
         }
@@ -69,18 +67,179 @@
         td, th {
             text-overflow: ellipsis;
             overflow: hidden;
-            white-space: nowrap;  /* Memastikan teks tidak meluber ke luar */
+            white-space: nowrap;
         }
 
         .table img {
-            max-width: 100px; /* Membatasi ukuran gambar */
+            max-width: 100px;
             height: auto;
         }
-</style>
 
-<body class="bg-gray-100 min-h-screen flex flex-col">
+        /* Sidebar Toggle Button */
+        .sidebar-toggle-btn {
+            display: block;
+            background-color: #28a745;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1050;
+        }
+
+        .sidebar-toggle-btn:hover {
+            background-color: #218838;
+        }
+
+        /* Close Button (without background) */
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 30px;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            cursor: pointer;
+        }
+
+        .close-btn:hover {
+            color: #ff4d4d;
+        }
+
+        /* Responsive Sidebar */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: absolute;
+                width: 100%;
+                height: auto;
+                padding-top: 20px;
+                top: 0;
+                left: -250px;
+            }
+
+            .sidebar.show {
+                left: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 10px;
+            }
+
+            .sidebar-toggle-btn {
+                display: block;
+                background-color: #28a745;
+                border: none;
+                color: white;
+                padding: 10px 20px;
+                font-size: 16px;
+                cursor: pointer;
+                border-radius: 5px;
+                position: fixed;
+                top: 10px;
+                left: 10px;
+                z-index: 1050;
+            }
+
+            .sidebar-toggle-btn:hover {
+                background-color: #218838;
+            }
+
+            /* Tabel Aksi di Mobile */
+            .table-responsive td {
+                white-space: normal; /* Membuat teks aksi dapat dibaca */
+            }
+            .table-responsive .action-column {
+                text-align: center; /* Menjaga aksi di tengah */
+                white-space: normal;
+            }
+
+            /* Kolom Alamat - Tambahkan untuk memotong teks pada tampilan mobile */
+            .address-column {
+                max-width: 100px;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .sidebar {
+                left: 0;
+            }
+
+            .main-content {
+                margin-left: 250px;
+            }
+        }
+
+        /* Additional Styles for Content */
+        .content-wrapper {
+            padding-top: 30px; /* Ensure space from top */
+            padding-bottom: 50px; /* Ensure space at the bottom */
+        }
+
+        /* Add padding to the table container */
+        .table-responsive {
+            padding-top: 30px;
+        }
+
+        /* Alamat Teks - Memotong dan menambah ellipsis */
+        .address-column {
+            max-width: 150px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        /* Horizontal Scroll pada Table */
+        .table-responsive {
+            max-width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Styling untuk tombol Edit dan Delete */
+        .btn-edit {
+            background-color: #ffc107; /* Kuning */
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .btn-edit:hover {
+            background-color: #e0a800; /* Kuning lebih gelap */
+        }
+
+        .btn-delete {
+            background-color: #dc3545; /* Merah */
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333; /* Merah lebih gelap */
+        }
+    </style>
+</head>
+<body class="bg-light min-vh-100 d-flex flex-column">
+
+    <!-- Navbar for both mobile and desktop -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <button class="sidebar-toggle-btn" id="sidebar-toggle-btn" onclick="toggleSidebar()">☰ Menu</button>
+    </nav>
+
     <!-- Sidebar -->
-    <div class="sidebar">
+    <div id="sidebar" class="sidebar">
+        <button class="close-btn" onclick="toggleSidebar()">&times;</button>
         <h3>Hi Admin Simpas</h3>
         <a href="{{ url_for('admin_dashboard') }}" class="{{ 'active' if request.endpoint == 'admin_dashboard' else '' }}">Dashboard</a>
         <a href="{{ url_for('articles') }}" class="{{ 'active' if request.endpoint == 'articles' else '' }}">Articles</a>
@@ -92,46 +251,46 @@
     </div>
 
     <!-- Main Content -->
-    <div class="main-content ml-64 pt-8">
-        <div class="container mx-auto px-4 py-6">
-            <div class="bg-white rounded-lg shadow p-6">
+    <div id="page-content-wrapper" class="container-fluid">
+        <div class="main-content content-wrapper">
+            <div class="bg-white rounded-lg shadow p-4">
                 <!-- Title -->
-                <h1 class="text-2xl font-semibold text-gray-700 mb-6">Daftar Pengepul</h1>
+                <h1 class="h3 text-dark mb-4">Daftar Pengepul</h1>
 
                 <!-- Add Collector Button -->
                 <div class="mb-4">
-                    <a href="{{ url_for('add_collector') }}" class="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                    <a href="{{ url_for('add_collector') }}" class="btn btn-primary">
                         Add Collector
                     </a>
                 </div>
 
                 <!-- Table -->
-                <div class="table-wrapper overflow-x-auto">
-                    <table class="min-w-full bg-white border border-gray-200 rounded-lg">
-                        <thead>
-                            <tr class="bg-gray-100">
-                                <th class="py-2 px-4 text-left text-sm font-medium text-gray-700">ID</th>
-                                <th class="py-2 px-4 text-left text-sm font-medium text-gray-700">Nama</th>
-                                <th class="py-2 px-4 text-left text-sm font-medium text-gray-700">Email</th>
-                                <th class="py-2 px-4 text-left text-sm font-medium text-gray-700">Alamat</th>
-                                <th class="py-2 px-4 text-center text-sm font-medium text-gray-700">Aksi</th>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead class="thead-light">
+                            <tr>
+                                <th class="text-left">ID</th>
+                                <th class="text-left">Nama</th>
+                                <th class="text-left">Email</th>
+                                <th class="text-left">Alamat</th>
+                                <th class="text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for collector in collectors %}
-                            <tr class="border-t border-gray-200">
-                                <td class="py-2 px-4 text-sm text-gray-700">{{ collector['_id'] }}</td>  <!-- ID Collector -->
-                                <td class="py-2 px-4 text-sm text-gray-700">{{ collector['name'] }}</td> <!-- Nama -->
-                                <td class="py-2 px-4 text-sm text-gray-700">{{ collector['email'] }}</td> <!-- Email -->
-                                <td class="py-2 px-4 text-sm text-gray-700">{{ collector['address'] }}</td> <!-- Alamat -->
-                                <td class="py-2 px-4 text-center">
-                                    <a href="{{ url_for('edit_collector', id=collector['_id']) }}" class="text-blue-600 hover:underline">Edit</a> |
-                                    <a href="{{ url_for('delete_collector', id=collector['_id']) }}" class="text-red-600 hover:underline">Delete</a>
+                            <tr>
+                                <td>{{ collector['_id'] }}</td>
+                                <td>{{ collector['name'] }}</td>
+                                <td>{{ collector['email'] }}</td>
+                                <td class="address-column">{{ collector['address'] }}</td> <!-- Alamat terpotong jika panjang -->
+                                <td class="text-center action-column">
+                                    <a href="{{ url_for('edit_collector', id=collector['_id']) }}" class="btn-edit">Edit</a> |
+                                    <a href="{{ url_for('delete_collector', id=collector['_id']) }}" class="btn-delete">Delete</a>
                                 </td>
                             </tr>
                             {% else %}
                             <tr>
-                                <td colspan="5" class="py-4 text-center text-gray-500">Tidak ada data pengepul</td>
+                                <td colspan="5" class="text-center text-muted">Tidak ada data pengepul</td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -140,5 +299,34 @@
             </div>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Toggle sidebar for both mobile and desktop
+        function toggleSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            var mainContent = document.querySelector('.main-content');
+            var toggleBtn = document.getElementById('sidebar-toggle-btn');
+
+            sidebar.classList.toggle('show');
+            toggleBtn.style.display = sidebar.classList.contains('show') ? 'none' : 'block';
+
+            // Adjust margin-left of main content when sidebar is toggled
+            if (sidebar.classList.contains('show')) {
+                mainContent.style.marginLeft = '250px';  // Adjust for sidebar
+            } else {
+                mainContent.style.marginLeft = '0';  // Remove margin when sidebar is hidden
+            }
+        }
+
+        // Set initial state of the main content (aligned to the left) on page load
+        window.onload = function() {
+            var sidebar = document.getElementById('sidebar');
+            var mainContent = document.querySelector('.main-content');
+
+            // Ensure main content starts with no margin when page loads
+            mainContent.style.marginLeft = '0';
+        };
+    </script>
 </body>
 </html>
