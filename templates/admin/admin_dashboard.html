@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+    <link rel="icon" href="/static/images/logo awal.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
        /* Styling Sidebar */
@@ -171,7 +172,6 @@
         <a href="{{ url_for('articles') }}" class="{{ 'active' if request.endpoint == 'articles' else '' }}">Articles</a>
         <a href="{{ url_for('settings') }}" class="{{ 'active' if request.endpoint == 'settings' else '' }}">Settings</a>
         <a href="{{ url_for('collectors') }}" class="{{ 'active' if request.endpoint == 'collectors' else '' }}">Collectors</a>
-        <a href="{{ url_for('topup_requests') }}" class="{{ 'active' if request.endpoint == 'topup_requests' else '' }}">Top-Up Requests</a>
         <a href="{{ url_for('sentimen') }}" class="{{ 'active' if request.endpoint == 'sentimen' else '' }}">Sentimen</a>
         <a href="{{ url_for('logout') }}">Logout</a>
     </div>

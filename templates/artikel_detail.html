@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ article['title'] }}</title>
-  <link rel="icon" href="/static/images/logo awal.png" type="image/x-icon">
+  <title>{{ article[0] }}</title> <!-- Menggunakan artikel[0] untuk title -->
+  <link rel="icon" href="/static/images/logo_awal.png" type="image/x-icon">
   <link href="/static/css/main.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100 p-6">
@@ -23,20 +23,20 @@
   <!-- Konten artikel -->
   <div class="pt-16 max-w-4xl mx-auto">
     <h1 class="text-4xl font-semibold text-center text-black mb-10">
-      {{ article['title'] }}
+      {{ article[0] }} <!-- Menggunakan artikel[0] untuk title -->
     </h1>
 
-    {% if article['image_filename'] %}
+    {% if article[2] %}  <!-- Mengecek apakah ada gambar -->
       <div class="mb-6">
         <!-- Gambar dengan ukuran memanjang -->
-        <img src="{{ url_for('static', filename='uploads/' + article['image_filename']) }}" 
+        <img src="{{ url_for('static', filename='uploads/' + article[2]) }}" 
              alt="Gambar Artikel" 
              class="w-full h-[900px] object-cover rounded-lg shadow-md">
       </div>
     {% endif %}
 
     <!-- Isi Artikel -->
-    <p class="text-sm sm:text-base text-black mb-6">{{ article['content'] }}</p>
+    <p class="text-sm sm:text-base text-black mb-6">{{ article[1] }}</p> <!-- Menggunakan artikel[1] untuk content -->
   </div>
 </body>
 </html>
