@@ -20,10 +20,10 @@ analyzer_indobert = SentimentAnalyzer(model_indobert)
 
 # Konfigurasi database
 db_config = {
-    'host': 'localhost',
-    'user': 'root',         
-    'password': '',         
-    'database': 'simpas',   
+    'host': 'homelaundry.my.id',
+    'user': 'homelaun_capstone_ulhaq',         
+    'password': 'capstone_ulhaq_1234_',         
+    'database': 'homelaun_capstone_ulhaq',   
 }
 
 # Konfigurasi folder untuk upload gambar
@@ -31,18 +31,18 @@ app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
 
 # Hardcoded API Key and PDF path
-GROQ__API__KEY = "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"
-PDF_FILE_PATH = os.path.join(os.path.dirname(__file__), "data/dataset1.pdf")
+GROQ_API_KEY = "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"
+PDF__FILE__PATH = os.path.join(os.path.dirname(__file__), "data/dataset1.pdf")
 
 def initialize_rag_model():
     """Initialize the RAG model and vector store retriever."""
     try:
         # Initialize LLM and embeddings
-        llm = initialize_llm(GROQ__API__KEY)
+        llm = initialize_llm(GROQ_API_KEY)
         embeddings = initialize_embeddings()
 
         # Load and process PDF documents
-        pdf_loader = PyPDFLoader(PDF_FILE_PATH)
+        pdf_loader = PyPDFLoader(PDF__FILE__PATH)
         documents = pdf_loader.load()
 
         # Initialize vector store retriever
@@ -298,84 +298,114 @@ def add_collector():
         return redirect(url_for('login_admin'))  # Pastikan hanya admin yang dapat mengakses
 
     if request.method == 'POST':
-        name = request.form['name']
+        nama = request.form['nama']
         email = request.form['email']
-        address = request.form['address']
         password = request.form['password']
-        
-        # Hash password
-        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        address = request.form['address']
 
-        # Simpan ke database
-        connection = pymysql.connect(**db_config)
-        cur = connection.cursor()
-        cur.execute("INSERT INTO collectors (name, email, address, password) VALUES (%s, %s, %s, %s)", 
-                    (name, email, address, hashed_password.decode('utf-8')))
-        connection.commit()
-        cur.close()
-        connection.close()
+        # Simpan ke database tanpa hashing password
+        try:
+            connection = pymysql.connect(**db_config)
+            cur = connection.cursor()
+            cur.execute("INSERT INTO pengepul (nama, email, password, address) VALUES (%s, %s, %s, %s)", 
+                        (nama, email, password, address))
+            connection.commit()
+            cur.close()
+            connection.close()
 
-        # Flash success message
-        flash("Pengepul telah ditambahkan!", "success")
-        return redirect(url_for('add_collector'))  # Redirect ke halaman add_collector
+            # Flash success message
+            flash("Pengepul telah ditambahkan!", "success")
+            return redirect(url_for('collectors'))  # Arahkan kembali ke halaman collectors setelah berhasil menambah
+
+        except Exception as e:
+            flash(f"Terjadi kesalahan: {e}", "danger")  # Menampilkan pesan error jika ada masalah
+            return redirect(url_for('add_collector'))  # Kembali ke halaman form
 
     return render_template('admin/add_collector.html')
 
+
 @app.route('/collectors')
 def collectors():
+    # Pastikan hanya admin yang bisa mengakses halaman ini
     if 'user_id' not in session:
-        return redirect(url_for('login_admin'))  # Pastikan hanya admin yang bisa mengakses
+        return redirect(url_for('login_admin'))
 
-    # Ambil data pengepul dari database
-    connection = pymysql.connect(**db_config)
-    cur = connection.cursor()
-    cur.execute("SELECT id, name, email, address FROM collectors")
-    collectors = cur.fetchall()
-    cur.close()
-    connection.close()
+    try:
+        # Koneksi ke database MySQL
+        connection = pymysql.connect(**db_config)
+        cur = connection.cursor()
 
-    return render_template('admin/collectors.html', collectors=collectors)
+        # Ambil data pengepul dari tabel 'pengepul'
+        cur.execute("SELECT nama, id, email, address FROM pengepul")
+        pengepul = cur.fetchall()  # Mengambil semua data pengepul
+        cur.close()  # Tutup cursor
+        connection.close()  # Tutup koneksi
+
+        return render_template('admin/collectors.html', pengepul=pengepul)  # Kirim data ke template
+
+    except Exception as e:
+        # Jika ada error dalam koneksi atau query
+        print(f"Error: {e}")
+        return render_template('admin/collectors.html', pengepul=[])  # Kirim data kosong jika error
+
+
 
 @app.route('/edit_collector/<int:id>', methods=['GET', 'POST'])
 def edit_collector(id):
     if 'user_id' not in session:
-        return redirect(url_for('login_admin'))
+        return redirect(url_for('login_admin'))  # Pastikan hanya admin yang dapat mengakses
 
     connection = pymysql.connect(**db_config)
     cur = connection.cursor()
 
     if request.method == 'POST':
-        name = request.form['name']
+        nama = request.form['nama']
         email = request.form['email']
         address = request.form['address']
-        cur.execute("UPDATE collectors SET name = %s, email = %s, address = %s WHERE id = %s",
-                    (name, email, address, id))
+
+        # Update data pengepul pada tabel 'pengepul'
+        cur.execute("UPDATE pengepul SET nama = %s, email = %s, address = %s WHERE id = %s",
+                    (nama, email, address, id))
         connection.commit()
         cur.close()
         connection.close()
-        flash("Data pengepul berhasil diperbarui!", "success")
-        return redirect(url_for('collectors'))
 
-    cur.execute("SELECT id, name, email, address FROM collectors WHERE id = %s", (id,))
+        flash("Data pengepul berhasil diperbarui!", "success")
+        return redirect(url_for('collectors'))  # Arahkan kembali ke halaman collectors setelah edit
+
+    # Ambil data pengepul berdasarkan ID
+    cur.execute("SELECT id, nama, email, address FROM pengepul WHERE id = %s", (id,))
     collector = cur.fetchone()
     cur.close()
     connection.close()
 
     return render_template('admin/edit_collector.html', collector=collector)
 
+
 @app.route('/delete_collector/<int:id>')
 def delete_collector(id):
     if 'user_id' not in session:
         return redirect(url_for('login_admin'))
 
-    connection = pymysql.connect(**db_config)
-    cur = connection.cursor()
-    cur.execute("DELETE FROM collectors WHERE id = %s", (id,))
-    connection.commit()
-    cur.close()
-    connection.close()
-    flash("Pengepul telah dihapus!", "success")
-    return redirect(url_for('collectors'))
+    try:
+        # Koneksi ke database MySQL
+        connection = pymysql.connect(**db_config)
+        cur = connection.cursor()
+
+        # Hapus data pengepul berdasarkan ID
+        cur.execute("DELETE FROM pengepul WHERE id = %s", (id,))
+        connection.commit()
+        cur.close()
+        connection.close()
+
+        # Flash success message
+        flash("Pengepul telah dihapus!", "success")
+    except Exception as e:
+        # Menangani jika terjadi error
+        flash(f"Terjadi kesalahan: {e}", "error")
+    
+    return redirect(url_for('collectors'))  # Redirect kembali ke halaman collectors
+
 
 
 @app.route('/sentimen', methods=['GET'])
@@ -386,7 +416,7 @@ def sentimen():
 
     # Lakukan permintaan ke API untuk mendapatkan data sentimen
     try:
-        response = requests.get('http://localhost:3000/api/getSentimen') 
+        response = requests.get('https://fluttermysqlapi.vercel.app/api/getSentimen') 
         feedbacks = response.json()
     except requests.exceptions.RequestException as e:
         # Tangani kesalahan saat request API
