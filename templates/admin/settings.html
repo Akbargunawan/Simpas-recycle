@@ -145,6 +145,7 @@
         <a href="{{ url_for('admin_dashboard') }}" class="{{ 'active' if request.endpoint == 'admin_dashboard' else '' }}">Dashboard</a>
         <a href="{{ url_for('articles') }}" class="{{ 'active' if request.endpoint == 'articles' else '' }}">Articles</a>
         <a href="{{ url_for('settings') }}" class="{{ 'active' if request.endpoint == 'settings' else '' }}">Settings</a>
+        <a href="{{ url_for('list_pengepul') }}" class="{{ 'active' if request.endpoint == 'list_pengepul' else '' }}">List Collectors</a>
         <a href="{{ url_for('collectors') }}" class="{{ 'active' if request.endpoint == 'collectors' else '' }}">Collectors</a>
         <a href="{{ url_for('sentimen') }}" class="{{ 'active' if request.endpoint == 'sentimen' else '' }}">Sentimen</a>
         <a href="{{ url_for('logout') }}">Logout</a>

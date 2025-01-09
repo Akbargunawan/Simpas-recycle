@@ -468,6 +468,61 @@ def logout():
     return redirect(url_for('login_admin'))  # Redirect ke halaman login
 
 
+@app.route('/daftar_pengepul', methods=['GET', 'POST'])
+def daftar_pengepul():
+    if request.method == 'POST':
+        nama = request.form['nama']
+        email = request.form['email']
+        alamat = request.form['alamat']
+
+        # Debug log untuk memeriksa nilai yang dikirimkan
+        print(f"Nama: {nama}, Email: {email}, Alamat: {alamat}")
+
+        try:
+            connection = pymysql.connect(**db_config)
+            cur = connection.cursor()
+            # Mengganti nama tabel menjadi 'daftar_pengepul'
+            cur.execute("INSERT INTO daftar_pengepul (nama, email, alamat) VALUES (%s, %s, %s)", 
+                        (nama, email, alamat))
+            connection.commit()
+            cur.close()
+
+            # Flash success message
+            flash("Berhasil mendaftar, tunggu email dari admin!", "success")
+            return redirect(url_for('daftar_pengepul'))  # Arahkan kembali ke halaman collectors setelah berhasil menambah
+
+        except Exception as e:
+            flash(f"Terjadi kesalahan: {e}", "danger")  # Menampilkan pesan error jika ada masalah
+            return redirect(url_for('daftar_pengepul'))  # Kembali ke halaman form
+
+    return render_template('daftar_pengepul.html')
+
+@app.route('/list_pengepul', methods=['GET'])
+def list_pengepul():
+    if 'user_id' not in session:
+        return redirect(url_for('login_admin'))
+    
+    try:
+        # Menghubungkan ke database
+        connection = pymysql.connect(**db_config)
+        cur = connection.cursor()
+        
+        # Mengambil data dari tabel daftar_pengepul
+        cur.execute("SELECT id, nama, email, alamat FROM daftar_pengepul")
+        pengepul_list = cur.fetchall()
+        
+        cur.close()
+        connection.close()
+        
+        return render_template('admin/list_pengepul.html', pengepul_list=pengepul_list)
+    except Exception as e:
+        return str(e)
+
+
+
+
+
+
 
 
 
