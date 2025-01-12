@@ -253,34 +253,66 @@ def delete_article(id):
 #loginadmin
 @app.route('/admin/login', methods=['GET', 'POST'])
 def login_admin():
+    # Jika permintaan adalah POST (untuk login)
     if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
-        
-        # Koneksi ke database untuk mengecek data login
-        connection = pymysql.connect(**db_config)
-        cur = connection.cursor()
-        
-        # Query untuk mengambil data admin berdasarkan email
-        cur.execute("SELECT * FROM admin WHERE email = %s", (email,))
-        user = cur.fetchone()  # Ambil satu record
-        
-        if user:
-            stored_hash = user[2]  # Ambil password yang telah di-hash dari database
+        if request.is_json:  # Memastikan data yang diterima dalam format JSON
+            data = request.get_json()
+            email = data.get('email')
+            password = data.get('password')
             
-            # Verifikasi password yang dimasukkan dengan password yang tersimpan di database
-            if bcrypt.checkpw(password.encode('utf-8'), stored_hash.encode('utf-8')):
-                session['user_id'] = user[0]  # Simpan ID user di session
-                flash("Login successful!", "success")
-                return redirect(url_for('admin_dashboard'))  # Redirect ke dashboard admin
+            # Koneksi ke database untuk mengecek data login
+            connection = pymysql.connect(**db_config)
+            cur = connection.cursor()
+            
+            # Query untuk mengambil data admin berdasarkan email
+            cur.execute("SELECT * FROM admin WHERE email = %s", (email,))
+            user = cur.fetchone()  # Ambil satu record
+            
+            if user:
+                stored_hash = user[2]  # Ambil password yang telah di-hash dari database
+                
+                # Verifikasi password yang dimasukkan dengan password yang tersimpan di database
+                if bcrypt.checkpw(password.encode('utf-8'), stored_hash.encode('utf-8')):
+                    session['user_id'] = user[0]  # Simpan ID user di session
+                    return jsonify({"message": "Login successful!", "status": "success"}), 200
+                else:
+                    return jsonify({"message": "Invalid password", "status": "danger"}), 401
             else:
-                flash("Invalid password", "danger")
-        else:
-            flash("Email not found", "danger")
+                return jsonify({"message": "Email not found", "status": "danger"}), 404
+            
+            cur.close()
+            connection.close()
         
-        cur.close()
-        connection.close()
-    
+        else:
+            # Jika request bukan JSON, maka tampilkan halaman login menggunakan template HTML
+            email = request.form['email']
+            password = request.form['password']
+            
+            # Koneksi ke database untuk mengecek data login
+            connection = pymysql.connect(**db_config)
+            cur = connection.cursor()
+            
+            # Query untuk mengambil data admin berdasarkan email
+            cur.execute("SELECT * FROM admin WHERE email = %s", (email,))
+            user = cur.fetchone()  # Ambil satu record
+            
+            if user:
+                stored_hash = user[2]  # Ambil password yang telah di-hash dari database
+                
+                # Verifikasi password yang dimasukkan dengan password yang tersimpan di database
+                if bcrypt.checkpw(password.encode('utf-8'), stored_hash.encode('utf-8')):
+                    session['user_id'] = user[0]  # Simpan ID user di session
+                    flash("Login successful!", "success")
+                    return redirect(url_for('admin_dashboard'))  # Redirect ke dashboard admin
+                else:
+                    flash("Invalid password", "danger")
+            else:
+                flash("Email not found", "danger")
+            
+            cur.close()
+            connection.close()
+
+    # Jika request adalah GET (untuk menampilkan halaman login)
     return render_template('admin/login_admin.html')  # Tampilkan halaman login
 
 @app.route('/admin_dashboard')
